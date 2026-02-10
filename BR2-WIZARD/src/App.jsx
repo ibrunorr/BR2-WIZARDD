@@ -1,28 +1,25 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { QueryClientProvider } from "@tanstack/react-query";
-
 import { Toaster } from "./components/ui/toaster";
-import UserNotRegisteredError from "./components/UserNotRegisteredError";
 
 import { queryClientInstance } from "./lib/query-client";
 import NavigationTracker from "./lib/NavigationTracker";
-import { AuthProvider, useAuth } from "./lib/AuthContext";
-import PageNotFound from "./lib/PageNotFound";
-
 import { pagesConfig } from "./pages.config";
+import PageNotFound from "./lib/PageNotFound";
+import { AuthProvider, useAuth } from "./lib/AuthContext";
+import UserNotRegisteredError from "./components/UserNotRegisteredError";
 
 const { Pages, Layout, mainPage } = pagesConfig;
+
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
 const MainPage = mainPageKey ? Pages[mainPageKey] : () => null;
 
-const LayoutWrapper = ({ children, currentPageName }) =>
-  Layout ? (
-    <Layout currentPageName={currentPageName}>{children}</Layout>
-  ) : (
-    <>{children}</>
-  );
+const LayoutWrapper = ({ children, currentPageName }) => {
+  if (!Layout) return children;
+  return <Layout currentPageName={currentPageName}>{children}</Layout>;
+};
 
-const AuthenticatedApp = () => {
+function AuthenticatedApp() {
   const {
     isLoadingAuth,
     isLoadingPublicSettings,
@@ -30,16 +27,14 @@ const AuthenticatedApp = () => {
     navigateToLogin,
   } = useAuth();
 
-  // Loading
-  if (isLoadingPublicSettings || isLoadingAuth) {
+  if (isLoadingAuth || isLoadingPublicSettings) {
     return (
       <div className="fixed inset-0 flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-slate-200 border-t-slate-800 rounded-full animate-spin"></div>
+        <div className="w-8 h-8 border-4 border-slate-200 border-t-slate-800 rounded-full animate-spin" />
       </div>
     );
   }
 
-  // Auth errors
   if (authError) {
     if (authError.type === "user_not_registered") {
       return <UserNotRegisteredError />;
@@ -77,9 +72,9 @@ const AuthenticatedApp = () => {
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
-};
+}
 
-function App() {
+export default function App() {
   return (
     <AuthProvider>
       <QueryClientProvider client={queryClientInstance}>
@@ -92,5 +87,3 @@ function App() {
     </AuthProvider>
   );
 }
-
-export default App;
