@@ -1,16 +1,15 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { Toaster } from "./components/ui/toaster";
+import { Toaster } from "@/components/ui/toaster";
 
-import { queryClientInstance } from "./lib/query-client";
-import NavigationTracker from "./lib/NavigationTracker";
-import { pagesConfig } from "./pages.config";
-import PageNotFound from "./lib/PageNotFound";
-import { AuthProvider, useAuth } from "./lib/AuthContext";
-import UserNotRegisteredError from "./components/UserNotRegisteredError";
+import { queryClientInstance } from "@/lib/query-client";
+import NavigationTracker from "@/lib/NavigationTracker";
+import { pagesConfig } from "@/pages.config";
+import PageNotFound from "@/lib/PageNotFound";
+import { AuthProvider, useAuth } from "@/lib/AuthContext";
+import UserNotRegisteredError from "@/components/UserNotRegisteredError";
 
 const { Pages, Layout, mainPage } = pagesConfig;
-
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
 const MainPage = mainPageKey ? Pages[mainPageKey] : () => null;
 
