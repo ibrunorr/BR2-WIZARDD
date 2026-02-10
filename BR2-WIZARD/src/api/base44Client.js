@@ -1,14 +1,7 @@
-import { createClient } from '@base44/sdk';
-import { appParams } from '@/lib/app-params';
+// src/api/base44Client.js
+// Mock do antigo cliente Base44 para permitir build na Vercel.
+// Ajuste conforme seu app for pedindo dados reais.
 
-const { appId, token, functionsVersion, appBaseUrl } = appParams;
-
-//Create a client with authentication required
-export const base44 = createClient({
-  appId,
-  token,
-  functionsVersion,
-  serverUrl: '',
-  requiresAuth: false,
-  appBaseUrl
-});
+export const base44 = {
+  // Exemplo: caso alguma tela chame base44.xxx(), não quebra.
+}
